@@ -13,8 +13,7 @@ refs.start.addEventListener('click', () => {
     refs.start.disabled = true;
     refs.stop.disabled = false;
     timerId = setInterval(() => {
-        const color = getRandomHexColor();
-        document.body.style.backgroundColor = color;
+        document.body.style.backgroundColor = getRandomHexColor();
     }, 1000)
 });
 refs.stop.addEventListener('click', () => {
