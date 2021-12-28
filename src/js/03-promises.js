@@ -6,22 +6,25 @@ const refs = {
 };
 
 refs.form.addEventListener('submit', onBtnSubmit);
-let position = 0;
+
 
 function onBtnSubmit(e) {
   e.preventDefault();
-  
+  let position = 0;
   let delay = Number(e.currentTarget.elements.delay.value);
   let step = Number(e.currentTarget.elements.step.value);
   let amount = Number(e.currentTarget.elements.amount.value);
-
-  setInterval(() => {
-    if (position >= amount) {
-     return
+  
+  const setIntervalId = setInterval(() => {
+    if (position === amount) {
+      clearInterval(setIntervalId) 
+      position = 0;
+      return     
     }
+     
     position += 1;
     setTimeout(() => {
-      delay += step      
+      delay += step;    
     });
     
     createPromise(position, delay)
