@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "flatpickr": "^4.6.9",
+    "notiflix": "^3.2.2",
     "notifyjs": "^3.0.0",
     "toastr": "^2.1.4"
   }

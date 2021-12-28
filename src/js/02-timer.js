@@ -1,25 +1,6 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-import toastr from 'toastr';
-import 'toastr/build/toastr.min.css';
-
-toastr.options = {
-  "closeButton": true,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": false,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "5000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-}
+import Notiflix from 'notiflix';
 
 const refs = {
     input: document.querySelector('#datetime-picker'),
@@ -41,7 +22,7 @@ const options = {
         const counterDate = selectedDates[0];
         const currentDate = this.config.defaultDate.getTime();
         if (currentDate > counterDate) {
-            toastr.warning('Please choose a date in the future')
+            Notiflix.Notify.failure('Please choose a date in the future')
             return;
         }
         refs.btn.disabled = false;  
@@ -59,18 +40,22 @@ const timer = {
         if (this.isActive) {
             return;
         }
-        
-        // const endTime = Date.now();
+            
+       
         this.isActive = true;
 
-        setInterval(() => {
+        const intervalId = setInterval(() => {
             const currentTime = Date.now();
             const deltaTime = datePickr.selectedDates[0] - currentTime;
-            const { days, hours, mins, secs } = getTimeComponents(deltaTime);
-            updatrClockFace({ days, hours, mins, secs })
-            // console.log(`${days}:${hours}:${mins}:${secs}`)
+            const time = getTimeComponents(deltaTime);
+            updatrClockFace(time);
+            if (deltaTime < 1000) {
+            clearInterval(intervalId);
+        }
         }, 1000);
+        
     },
+    
 };
 
 function updatrClockFace({ days, hours, mins, secs }) {
@@ -79,6 +64,7 @@ function updatrClockFace({ days, hours, mins, secs }) {
     refs.minutesSpan.textContent = `${mins}`;
     refs.secondsSpan.textContent = `${secs}`;
 
+    
 }
 
 function pad(value) {
